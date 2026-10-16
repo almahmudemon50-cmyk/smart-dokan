@@ -5,6 +5,73 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b2a5b">
 <title>স্মার্ট দোকান – Smart Dokan</title>
+/* Smart Dokan Modern Design */
+body {
+  background: #f1f5fb;
+  color: #172554;
+  font-family: system-ui, sans-serif;
+}
+
+.top {
+  background: linear-gradient(135deg, #0b2a5b, #2563eb);
+  color: white;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(11, 42, 91, 0.15);
+}
+
+.top h1 {
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.logo {
+  background: white;
+  color: #0b2a5b;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+main {
+  padding: 18px 14px 100px;
+}
+
+.card, .stat, .panel {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+input, select, textarea {
+  max-width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 11px;
+  background: white;
+}
+
+button {
+  transition: opacity 0.2s ease;
+}
+
+button:active {
+  opacity: 0.75;
+}
+
+.bottom {
+  background: white;
+  box-shadow: 0 -5px 20px rgba(15, 23, 42, 0.08);
+  padding-top: 8px;
+}
+
+@media (min-width: 700px) {
+  main {
+    padding: 24px;
+  }
+}
 <style>
 :root{--navy:#0b2a5b;--blue:#2563eb;--soft:#eaf1ff;--bg:#f4f7fc;--line:#e0e7f1;--ink:#14213d;--mut:#64748b;--ok:#15803d;--bad:#dc2626}
 *{box-sizing:border-box;margin:0;padding:0}
