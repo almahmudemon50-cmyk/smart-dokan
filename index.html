@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b2a5b">
+<title>স্মার্ট দোকান – Smart Dokan</title>
+<style>
+:root{--navy:#0b2a5b;--blue:#2563eb;--soft:#eaf1ff;--bg:#f4f7fc;--line:#e0e7f1;--ink:#14213d;--mut:#64748b;--ok:#15803d;--bad:#dc2626}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans Bengali","Hind Siliguri","Kalpurush",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:15px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.side{display:none}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700}
+.top h1{font-size:17px;color:var(--navy)}
+main{padding:14px 14px 92px;max-width:1000px;margin:0 auto}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;z-index:6;padding-bottom:env(safe-area-inset-bottom,0)}
+.bottom button{flex:1;padding:8px 2px;font-size:11px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:1px}
+.bottom button span{font-size:19px}
+.bottom button.on{color:var(--blue);font-weight:700}
+.hero{background:var(--navy);color:#fff;border-radius:16px;padding:18px;margin-bottom:14px}
+.hero small{opacity:.8}
+.hero .big{font-size:30px;font-weight:700;margin:2px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat small{color:var(--mut);display:block}
+.stat b{font-size:19px;color:var(--navy)}
+.stat.g b{color:var(--ok)}.stat.r b{color:var(--bad)}
+h2{font-size:16px;color:var(--navy);margin-bottom:10px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.btn{background:var(--blue);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.sm{padding:7px 12px;font-size:13px}
+.btn.danger{background:#fff;color:var(--bad);border:1px solid #f3c1c1}
+.item{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+.ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--soft)}
+.ic.e{background:#fdecec}
+.im{flex:1;min-width:0}
+.im b{display:block;overflow-wrap:anywhere}
+.im small{color:var(--mut);display:block}
+.am{font-weight:700;white-space:nowrap}.am.s{color:var(--ok)}.am.e{color:var(--bad)}
+.ac{display:flex;flex-direction:column;gap:2px}
+.ac button{padding:5px 8px;font-size:15px;border-radius:8px}
+.ac button:hover{background:var(--soft)}
+.tag{background:#fff4d6;color:#8a5a00;font-size:11px;padding:1px 7px;border-radius:99px;font-weight:600;white-space:nowrap}
+.empty{text-align:center;color:var(--mut);padding:26px 10px}
+.chart{display:flex;gap:6px;align-items:flex-end;height:140px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;font-size:11px;color:var(--mut)}
+.bars{flex:1;width:100%;display:flex;gap:3px;align-items:flex-end;justify-content:center}
+.bars i{display:block;width:42%;border-radius:4px 4px 0 0;min-height:2px}
+.b1{background:var(--blue)}.b2{background:#f59e0b}
+.legend{font-size:12px;color:var(--mut);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 4px 0 10px}
+.hb{margin-bottom:9px;font-size:13px}
+.hb div{height:9px;background:var(--soft);border-radius:9px;margin-top:3px}
+.hb div i{display:block;height:100%;background:var(--blue);border-radius:9px}
+.filters{display:grid;gap:8px;margin-bottom:10px}
+.filters .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+input,select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff}
+label{display:block;margin-bottom:10px;font-size:13px;color:var(--mut)}
+label input,label select{margin-top:4px;color:var(--ink);font-size:15px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{padding:6px 12px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px}
+.sum{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;font-size:13px;background:var(--soft);padding:10px 12px;border-radius:10px;margin-bottom:10px;color:var(--navy)}
+.ov{position:fixed;inset:0;background:rgba(11,42,91,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.ov.hide{display:none}
+.box{background:#fff;width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:18px;max-height:92vh;overflow:auto}
+.box h3{color:var(--navy);margin-bottom:12px;font-size:18px}
+.err{color:var(--bad);font-size:14px;min-height:20px;margin-bottom:8px}
+.row{display:flex;gap:8px}.row .btn{flex:1}
+.hint{font-size:13px;color:var(--navy);background:var(--soft);padding:8px 10px;border-radius:8px;margin-bottom:10px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:99px;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+.note{font-size:12.5px;color:var(--mut);margin-top:12px}
+@media(min-width:900px){
+ .side{display:flex;flex-direction:column;gap:4px;position:fixed;left:0;top:0;bottom:0;width:230px;background:var(--navy);padding:20px 14px;z-index:7}
+ .side .brand{color:#fff;font-size:20px;font-weight:700;margin-bottom:18px;display:flex;gap:10px;align-items:center}
+ .side .brand .logo{background:var(--blue)}
+ .side button{color:#c9d8f5;text-align:left;padding:11px 14px;border-radius:10px;display:flex;gap:10px;font-size:15px}
+ .side button.on{background:var(--blue);color:#fff;font-weight:600}
+ .bottom{display:none}
+ .top,main{margin-left:230px}
+ main{max-width:none;padding:20px 28px 40px}
+ .grid{grid-template-columns:repeat(3,1fr)}
+ .filters{grid-template-columns:2fr 1fr 1fr 1fr}
+ .ov{align-items:center}.box{border-radius:18px}
+ #toast{bottom:30px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<aside class="side" id="side"></aside>
+<header class="top"><div class="logo">দো</div><h1 id="ttl">স্মার্ট দোকান</h1></header>
+<main id="main"></main>
+<nav class="bottom" id="bot"></nav>
+<div class="ov hide" id="modal"><div class="box"><h3 id="mt"></h3><div id="mb"></div><div class="err" id="me" role="alert"></div><div class="row"><button class="btn ghost" id="mc">বাতিল</button><button class="btn" id="ms">সংরক্ষণ করুন</button></div></div></div>
+<div class="ov hide" id="welcome"><div class="box" style="text-align:center">
+<div class="logo" style="margin:0 auto 10px;width:56px;height:56px;font-size:22px">দো</div>
+<h3 style="font-size:22px">স্মার্ট দোকানে স্বাগতম</h3>
+<p style="margin:10px 0;color:var(--mut)">পণ্য, বিক্রি, খরচ ও লাভ-ক্ষতির হিসাব এক জায়গায়। শুরুতে আপনার দেখার জন্য কিছু <span class="tag">নমুনা</span> তথ্য দেওয়া আছে, যা পরে মুছে নিজের তথ্য দিতে পারবেন।</p>
+<p class="hint" style="text-align:left">⚠️ আপনার সব তথ্য শুধু এই ব্রাউজারেই সংরক্ষিত থাকে। অন্য ফোন, অন্য ব্রাউজার বা অন্য কারও সঙ্গে শেয়ার হয় না।</p>
+<button class="btn" id="go" style="width:100%">শুরু করুন</button></div></div>
+<div id="toast" role="status"></div>
+<script>
+"use strict";
+var KEY='smartdokan_v1',S,page='dash',mem=null,H={q:'',t:'all',f:'',to:''};
+var $=function(s){return document.querySelector(s)};
+var esc=function(t){return String(t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var r2=function(n){return Math.round((n+Number.EPSILON)*100)/100};
+var tk=function(n){return '৳'+Number(r2(n)).toLocaleString('bn-BD',{maximumFractionDigits:2})};
+var num=function(n){return Number(n).toLocaleString('bn-BD')};
+var ymd=function(d){return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+var today=function(){return ymd(new Date())};
+var addDays=function(n){var d=new Date();d.setDate(d.getDate()+n);return ymd(d)};
+var uid=function(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)};
+var fd=function(s){return new Date(s+'T00:00:00').toLocaleDateString('bn-BD',{day:'numeric',month:'short',year:'numeric'})};
+
+function sample(){
+ var P=[['চিনি (১ কেজি)',110,125,60],['সয়াবিন তেল (১ লিটার)',165,180,40],['মসুর ডাল (১ কেজি)',120,135,50],['লন্ড্রি সাবান',28,35,100]].map(function(a){return{id:uid(),name:a[0],cost:a[1],price:a[2],stock:a[3],bought:a[3],sample:1}});
+ var sales=[];
+ [[0,0,3],[0,1,2],[0,3,6],[1,2,4],[1,0,5],[2,1,3],[3,3,10],[4,2,5],[5,0,4],[5,1,2]].forEach(function(a){var p=P[a[1]];p.stock-=a[2];sales.push({id:uid(),date:addDays(-a[0]),pid:p.id,name:p.name,qty:a[2],price:p.price,cost:p.cost,sample:1})});
+ var ex=[[0,'বিদ্যুৎ বিল',350],[1,'পরিবহন খরচ',200],[3,'কর্মচারীর বেতন',1500],[5,'চা-নাস্তা',120]].map(function(a){return{id:uid(),date:addDays(-a[0]),title:a[1],amount:a[2],sample:1}});
+ return{products:P,sales:sales,expenses:ex,welcomed:false};
+}
+function load(){try{var t=localStorage.getItem(KEY);if(t){var d=JSON.parse(t);if(d&&d.products&&d.sales&&d.expenses)return d}}catch(e){}return sample()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S;toast('⚠️ ব্রাউজারে সংরক্ষণ করা যায়নি')}}
+var tt;function toast(m){var t=$('#toast');t.textContent=m;t.className='show';clearTimeout(tt);tt=setTimeout(function(){t.className=''},2600)}
+
+function stats(f,t){var ok=function(d){return(!f||d>=f)&&(!t||d<=t)};var rev=0,cg=0,ex=0;
+ S.sales.forEach(function(s){if(ok(s.date)){rev+=s.qty*s.price;cg+=s.qty*s.cost}});
+ S.expenses.forEach(function(e){if(ok(e.date))ex+=e.amount});
+ rev=r2(rev);cg=r2(cg);ex=r2(ex);var gp=r2(rev-cg);return{rev:rev,cg:cg,ex:ex,gp:gp,net:r2(gp-ex)}}
+function items(){var a=[];
+ S.sales.forEach(function(s){var rev=r2(s.qty*s.price),cg=r2(s.qty*s.cost);a.push({k:'s',id:s.id,date:s.date,t:s.name,q:s.qty,u:s.price,c:s.cost,rev:rev,cg:cg,gp:r2(rev-cg),sample:s.sample})});
+ S.expenses.forEach(function(e){a.push({k:'e',id:e.id,date:e.date,t:e.title,amt:e.amount,sample:e.sample})});
+ a.reverse();a.sort(function(x,y){return y.date.localeCompare(x.date)});return a}
+function row(i){var s=i.k==='s';return '<div class="item"><div class="ic '+i.k+'">'+(s?'🛒':'💸')+'</div><div class="im"><b>'+esc(i.t)+(i.sample?' <span class="tag">নমুনা</span>':'')+'</b><small>'+fd(i.date)+(s?' · '+num(i.q)+' × '+tk(i.u)+' · লাভ '+tk(i.gp):'')+'</small></div><div class="am '+i.k+'">'+(s?'+'+tk(i.rev):'−'+tk(i.amt))+'</div><div class="ac"><button title="সম্পাদনা" aria-label="সম্পাদনা" data-a="'+(s?'es':'ee')+'" data-id="'+i.id+'">✏️</button><button title="মুছুন" aria-label="মুছুন" data-a="'+(s?'ds':'de')+'" data-id="'+i.id+'">🗑️</button></div></div>'}
+
+var NAV=[['dash','🏠','ড্যাশবোর্ড'],['products','📦','পণ্য'],['sales','🛒','বিক্রি'],['exp','💸','খরচ'],['hist','🧾','ইতিহাস']];
+function navHtml(){return NAV.map(function(n){return '<button data-a="nav" data-p="'+n[0]+'" class="'+(page===n[0]?'on':'')+'"><span>'+n[1]+'</span>'+n[2]+'</button>'}).join('')}
+
+function pDash(){
+ var t=today(),d=stats(t,t),inv=0,sv=0;
+ S.products.forEach(function(p){inv+=p.bought*p.cost;sv+=p.stock*p.cost});inv=r2(inv);sv=r2(sv);
+ var days=[];for(var i=6;i>=0;i--){var x=addDays(-i),s=stats(x,x);days.push({d:x,rev:s.rev,ex:s.ex})}
+ var mx=Math.max.apply(null,[1].concat(days.map(function(x){return Math.max(x.rev,x.ex)})));
+ var chart=days.map(function(x){return '<div class="col"><div class="bars"><i class="b1" style="height:'+x.rev/mx*100+'%"></i><i class="b2" style="height:'+x.ex/mx*100+'%"></i></div>'+new Date(x.d+'T00:00:00').toLocaleDateString('bn-BD',{weekday:'short'})+'</div>'}).join('');
+ var agg={};S.sales.forEach(function(s){agg[s.name]=(agg[s.name]||0)+s.qty*s.price});
+ var top=Object.keys(agg).map(function(k){return[k,r2(agg[k])]}).sort(function(a,b){return b[1]-a[1]}).slice(0,5);
+ var tm=top.length?top[0][1]:1;
+ var low=S.products.filter(function(p){return p.stock<=5});
+ return '<div class="hero"><small>আজকের নিট লাভ</small><div class="big">'+tk(d.net)+'</div><small>বিক্রি '+tk(d.rev)+' − বিক্রয়ের খরচ '+tk(d.cg)+' − অন্যান্য খরচ '+tk(d.ex)+'</small></div>'+
+ '<div class="grid"><div class="card stat"><small>আজকের বিক্রি</small><b>'+tk(d.rev)+'</b></div><div class="card stat r"><small>আজকের খরচ</small><b>'+tk(d.ex)+'</b></div>'+
+ '<div class="card stat g"><small>আজকের মোট লাভ</small><b>'+tk(d.gp)+'</b></div><div class="card stat"><small>আজকের নিট লাভ</small><b>'+tk(d.net)+'</b></div>'+
+ '<div class="card stat"><small>মোট বিনিয়োগ</small><b>'+tk(inv)+'</b></div><div class="card stat"><small>বর্তমান স্টক মূল্য</small><b>'+tk(sv)+'</b></div></div>'+
+ '<div class="card" style="margin-bottom:14px"><h2>গত ৭ দিন</h2><div class="chart">'+chart+'</div><div class="legend"><i class="b1"></i>বিক্রি<i class="b2"></i>খরচ</div></div>'+
+ '<div class="card" style="margin-bottom:14px"><h2>সেরা বিক্রিত পণ্য</h2>'+(top.length?top.map(function(a){return '<div class="hb">'+esc(a[0])+' — '+tk(a[1])+'<div><i style="width:'+a[1]/tm*100+'%"></i></div></div>'}).join(''):'<div class="empty">এখনো কোনো বিক্রি নেই</div>')+'</div>'+
+ (low.length?'<div class="card" style="margin-bottom:14px"><h2>⚠️ স্টক কম</h2>'+low.map(function(p){return '<div>'+esc(p.name)+' — মজুদ '+num(p.stock)+'</div>'}).join('')+'</div>':'')+
+ '<button class="btn danger" data-a="reset">ডেমো ডেটা রিসেট করুন</button><p class="note">ℹ️ আপনার তথ্য শুধু এই ব্রাউজারে (localStorage) সংরক্ষিত। অন্য ডিভাইস বা অন্য ব্যবহারকারীর সঙ্গে শেয়ার হয় না।</p>';
+}
+function pProducts(){
+ return '<div class="bar"><h2 style="margin:0">পণ্যের তালিকা</h2><div><button class="btn ghost sm" data-a="csvP">CSV</button> <button class="btn sm" data-a="np">+ নতুন পণ্য</button></div></div>'+
+ (S.products.length?S.products.map(function(p){return '<div class="item"><div class="ic">📦</div><div class="im"><b>'+esc(p.name)+(p.sample?' <span class="tag">নমুনা</span>':'')+'</b><small>ক্রয় '+tk(p.cost)+' · বিক্রয় '+tk(p.price)+'</small><small style="color:'+(p.stock<=5?'var(--bad)':'var(--mut)')+'">মজুদ: '+num(p.stock)+' টি · মূল্য '+tk(p.stock*p.cost)+'</small></div><div class="ac"><button title="সম্পাদনা" aria-label="সম্পাদনা" data-a="ep" data-id="'+p.id+'">✏️</button><button title="মুছুন" aria-label="মুছুন" data-a="dp" data-id="'+p.id+'">🗑️</button></div></div>'}).join(''):'<div class="empty">কোনো পণ্য নেই। "+ নতুন পণ্য" চাপুন।</div>');
+}
+function pList(k,title,btn,act){
+ var l=items().filter(function(i){return i.k===k}).slice(0,40);
+ return '<div class="bar"><h2 style="margin:0">'+title+'</h2><button class="btn sm" data-a="'+act+'">'+btn+'</button></div>'+(l.length?l.map(row).join(''):'<div class="empty">এখনো কিছু যোগ করা হয়নি</div>');
+}
+function fil(){var q=H.q.trim().toLowerCase();return items().filter(function(i){return(H.t==='all'||H.t===i.k)&&(!H.f||i.date>=H.f)&&(!H.to||i.date<=H.to)&&(!q||i.t.toLowerCase().indexOf(q)>-1)})}
+function pHist(){
+ return '<div class="bar"><h2 style="margin:0">লেনদেনের ইতিহাস</h2><button class="btn ghost sm" data-a="csvH">⬇ CSV এক্সপোর্ট</button></div>'+
+ '<div class="filters"><input id="h_q" type="search" placeholder="🔍 নাম দিয়ে খুঁজুন" value="'+esc(H.q)+'"><select id="h_t"><option value="all">সব ধরন</option><option value="s">শুধু বিক্রি</option><option value="e">শুধু খরচ</option></select><input id="h_f" type="date" aria-label="শুরুর তারিখ" value="'+H.f+'"><input id="h_to" type="date" aria-label="শেষ তারিখ" value="'+H.to+'"></div>'+
+ '<div class="chips" style="margin-bottom:10px"><button data-a="qk" data-r="0">আজ</button><button data-a="qk" data-r="7">৭ দিন</button><button data-a="qk" data-r="30">এই মাস</button><button data-a="qk" data-r="all">সব</button></div><div id="hl"></div>';
+}
+function updHist(){
+ var l=fil(),rev=0,gp=0,ex=0;l.forEach(function(i){if(i.k==='s'){rev+=i.rev;gp+=i.gp}else ex+=i.amt});
+ $('#hl').innerHTML='<div class="sum"><span>বিক্রি: <b>'+tk(rev)+'</b></span><span>মোট লাভ: <b>'+tk(gp)+'</b></span><span>খরচ: <b>'+tk(ex)+'</b></span><span>নিট লাভ: <b>'+tk(gp-ex)+'</b></span></div>'+(l.length?l.map(row).join(''):'<div class="empty">কোনো লেনদেন পাওয়া যায়নি</div>');
+}
+var TITLES={dash:'ড্যাশবোর্ড',products:'পণ্য',sales:'বিক্রি',exp:'খরচ',hist:'ইতিহাস'};
+function render(){
+ var m=$('#main');
+ m.innerHTML=page==='dash'?pDash():page==='products'?pProducts():page==='sales'?pList('s','সাম্প্রতিক বিক্রি','+ নতুন বিক্রি','ns'):page==='exp'?pList('e','সাম্প্রতিক খরচ','+ নতুন খরচ','ne'):pHist();
+ $('#ttl').textContent=page==='dash'?'স্মার্ট দোকান':TITLES[page];
+ $('#side').innerHTML='<div class="brand"><div class="logo">দো</div>স্মার্ট দোকান</div>'+navHtml();
+ $('#bot').innerHTML=navHtml();
+ if(page==='hist'){$('#h_t').value=H.t;updHist()}
+ window.scrollTo(0,0);
+}
+
+function openForm(title,html,submit,after){
+ $('#mt').textContent=title;$('#mb').innerHTML=html;$('#me').textContent='';$('#modal').classList.remove('hide');
+ $('#ms').onclick=function(){var e=submit();if(e){$('#me').textContent=e}else{$('#modal').classList.add('hide');save();render()}};
+ if(after)after();var f=$('#mb input,#mb select');if(f&&window.innerWidth>900)f.focus();
+}
+function pForm(id){
+ var p=id?S.products.find(function(x){return x.id===id}):null;
+ openForm(p?'পণ্য সম্পাদনা':'নতুন পণ্য',
+ '<label>পণ্যের নাম<input id="f_n" maxlength="60" value="'+(p?esc(p.name):'')+'"></label><label>ক্রয়মূল্য (৳)<input id="f_c" type="number" inputmode="decimal" min="0" step="any" value="'+(p?p.cost:'')+'"></label><label>বিক্রয়মূল্য (৳)<input id="f_p" type="number" inputmode="decimal" min="0" step="any" value="'+(p?p.price:'')+'"></label><label>মজুদ (সংখ্যা)<input id="f_s" type="number" inputmode="numeric" min="0" step="1" value="'+(p?p.stock:'')+'"></label>',
+ function(){
+  var name=$('#f_n').value.trim(),c=parseFloat($('#f_c').value),pr=parseFloat($('#f_p').value),s=parseFloat($('#f_s').value);
+  if(!name)return 'পণ্যের নাম লিখুন';
+  if(!(c>=0))return 'সঠিক ক্রয়মূল্য দিন';
+  if(!(pr>0))return 'সঠিক বিক্রয়মূল্য দিন (০ এর বেশি)';
+  if(!(Number.isInteger(s)&&s>=0))return 'মজুদ ০ বা তার বেশি পূর্ণ সংখ্যা হতে হবে';
+  if(S.products.some(function(x){return x.id!==id&&x.name===name}))return 'এই নামে পণ্য আগেই আছে';
+  if(p){p.bought+=s-p.stock;p.name=name;p.cost=c;p.price=pr;p.stock=s;toast('✅ পণ্য আপডেট হয়েছে')}
+  else{S.products.push({id:uid(),name:name,cost:c,price:pr,stock:s,bought:s,sample:0});toast('✅ নতুন পণ্য যোগ হয়েছে')}
+  return null});
+}
+function sForm(id){
+ var old=id?S.sales.find(function(x){return x.id===id}):null;
+ if(old&&!S.products.some(function(p){return p.id===old.pid})){toast('⚠️ এই পণ্যটি মুছে ফেলা হয়েছে, তাই বিক্রি সম্পাদনা করা যাবে না');return}
+ var opts=S.products.filter(function(p){return p.stock>0||(old&&p.id===old.pid)});
+ if(!S.products.length){toast('⚠️ আগে একটি পণ্য যোগ করুন');return}
+ if(!opts.length){toast('⚠️ কোনো পণ্যের স্টক নেই');return}
+ openForm(old?'বিক্রি সম্পাদনা':'নতুন বিক্রি',
+ '<label>পণ্য<select id="f_p">'+opts.map(function(p){return '<option value="'+p.id+'"'+(old&&old.pid===p.id?' selected':'')+'>'+esc(p.name)+'</option>'}).join('')+'</select></label><div class="hint" id="f_h"></div><label>পরিমাণ<input id="f_q" type="number" inputmode="numeric" min="1" step="1" value="'+(old?old.qty:'')+'"></label><label>বিক্রয়মূল্য প্রতি একক (৳)<input id="f_u" type="number" inputmode="decimal" min="0" step="any" value="'+(old?old.price:'')+'"></label><label>তারিখ<input id="f_d" type="date" value="'+(old?old.date:today())+'"></label><div class="hint" id="f_v"></div>',
+ function(){
+  var p=S.products.find(function(x){return x.id===$('#f_p').value}),q=parseFloat($('#f_q').value),u=parseFloat($('#f_u').value),d=$('#f_d').value;
+  if(!p)return 'পণ্য বেছে নিন';
+  if(!(Number.isInteger(q)&&q>0))return 'পরিমাণ ১ বা তার বেশি পূর্ণ সংখ্যা হতে হবে';
+  if(!(u>=0))return 'সঠিক বিক্রয়মূল্য দিন';
+  if(!d)return 'তারিখ দিন';
+  var avail=p.stock+(old&&old.pid===p.id?old.qty:0);
+  if(q>avail)return 'স্টক যথেষ্ট নয়! মজুদ আছে মাত্র '+num(avail)+' টি';
+  var cost=(old&&old.pid===p.id)?old.cost:p.cost;
+  if(old){var op=S.products.find(function(x){return x.id===old.pid});if(op)op.stock+=old.qty;
+   old.pid=p.id;old.name=p.name;old.qty=q;old.price=u;old.cost=cost;old.date=d}
+  else S.sales.push({id:uid(),date:d,pid:p.id,name:p.name,qty:q,price:u,cost:cost,sample:0});
+  p.stock-=q;toast(old?'✅ বিক্রি আপডেট হয়েছে':'✅ বিক্রি সংরক্ষিত হয়েছে');return null},
+ function(){
+  var sel=$('#f_p');
+  function upd(){var p=S.products.find(function(x){return x.id===sel.value});if(!p)return;
+   var avail=p.stock+(old&&old.pid===p.id?old.qty:0);$('#f_h').textContent='মজুদ আছে: '+num(avail)+' টি · ক্রয়মূল্য '+tk(p.cost);
+   var q=parseFloat($('#f_q').value),u=parseFloat($('#f_u').value);
+   $('#f_v').textContent=(q>0&&u>=0)?'মোট বিক্রি '+tk(q*u)+' · লাভ '+tk(q*u-q*((old&&old.pid===p.id)?old.cost:p.cost)):'পরিমাণ ও দাম দিলে হিসাব দেখা যাবে'}
+  sel.onchange=function(){var p=S.products.find(function(x){return x.id===sel.value});if(p)$('#f_u').value=p.price;upd()};
+  $('#f_q').oninput=upd;$('#f_u').oninput=upd;
+  if(!old){var p0=S.products.find(function(x){return x.id===sel.value});if(p0)$('#f_u').value=p0.price}
+  upd()});
+}
+function eForm(id){
+ var e=id?S.expenses.find(function(x){return x.id===id}):null;
+ openForm(e?'খরচ সম্পাদনা':'নতুন খরচ',
+ '<label>খরচের বিবরণ<input id="f_t" maxlength="80" value="'+(e?esc(e.title):'')+'" placeholder="যেমন: দোকান ভাড়া"></label><label>পরিমাণ (৳)<input id="f_a" type="number" inputmode="decimal" min="0" step="any" value="'+(e?e.amount:'')+'"></label><label>তারিখ<input id="f_d" type="date" value="'+(e?e.date:today())+'"></label>',
+ function(){
+  var t=$('#f_t').value.trim(),a=parseFloat($('#f_a').value),d=$('#f_d').value;
+  if(!t)return 'খরচের বিবরণ লিখুন';
+  if(!(a>0))return 'সঠিক খরচের পরিমাণ দিন (০ এর বেশি)';
+  if(!d)return 'তারিখ দিন';
+  if(e){e.title=t;e.amount=a;e.date=d;toast('✅ খরচ আপডেট হয়েছে')}
+  else{S.expenses.push({id:uid(),date:d,title:t,amount:a,sample:0});toast('✅ খরচ সংরক্ষিত হয়েছে')}
+  return null});
+}
+function dl(name,rows){
+ var c='\ufeff'+rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\r\n');
+ var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove();
+ toast('✅ CSV ফাইল ডাউনলোড হচ্ছে');
+}
+document.addEventListener('click',function(ev){
+ var b=ev.target.closest('[data-a]');if(!b)return;var a=b.dataset.a,id=b.dataset.id;
+ if(a==='nav'){page=b.dataset.p;render()}
+ else if(a==='np')pForm();else if(a==='ep')pForm(id);
+ else if(a==='dp'){var p=S.products.find(function(x){return x.id===id});if(p&&confirm('"'+p.name+'" পণ্যটি মুছে ফেলবেন? আগের বিক্রির হিসাব থাকবে।')){S.products=S.products.filter(function(x){return x.id!==id});save();render();toast('🗑️ পণ্য মুছে ফেলা হয়েছে')}}
+ else if(a==='ns')sForm();else if(a==='es')sForm(id);
+ else if(a==='ds'){var s=S.sales.find(function(x){return x.id===id});if(s&&confirm('এই বিক্রিটি মুছে ফেলবেন? পণ্যের স্টক আবার বাড়বে।')){var p2=S.products.find(function(x){return x.id===s.pid});if(p2)p2.stock+=s.qty;S.sales=S.sales.filter(function(x){return x.id!==id});save();render();toast('🗑️ বিক্রি মুছে ফেলা হয়েছে'+(p2?', স্টক ফিরে এসেছে':''))}}
+ else if(a==='ne')eForm();else if(a==='ee')eForm(id);
+ else if(a==='de'){if(confirm('এই খরচটি মুছে ফেলবেন?')){S.expenses=S.expenses.filter(function(x){return x.id!==id});save();render();toast('🗑️ খরচ মুছে ফেলা হয়েছে')}}
+ else if(a==='reset'){if(confirm('সব তথ্য মুছে নমুনা ডেটা ফিরিয়ে আনবেন? এটি আর ফেরানো যাবে না।')){S=sample();S.welcomed=true;save();page='dash';render();toast('🔄 ডেমো ডেটা রিসেট হয়েছে')}}
+ else if(a==='qk'){var r=b.dataset.r,t=today();H.t=H.t;
+  if(r==='all'){H.f='';H.to=''}else if(r==='0'){H.f=t;H.to=t}else if(r==='7'){H.f=addDays(-6);H.to=t}else{H.f=t.slice(0,8)+'01';H.to=t}
+  $('#h_f').value=H.f;$('#h_to').value=H.to;updHist()}
+ else if(a==='csvH'){var l=fil();if(!l.length){toast('⚠️ এক্সপোর্ট করার মতো লেনদেন নেই');return}
+  var rows=[['তারিখ','ধরন','বিবরণ','পরিমাণ','একক দাম','বিক্রয় (৳)','বিক্রয়ের খরচ (৳)','মোট লাভ (৳)','খরচ (৳)']];
+  l.forEach(function(i){rows.push(i.k==='s'?[i.date,'বিক্রি',i.t,i.q,i.u,i.rev,i.cg,i.gp,'']:[i.date,'খরচ',i.t,'','','','','',i.amt])});
+  dl('smart-dokan-history.csv',rows)}
+ else if(a==='csvP'){if(!S.products.length){toast('⚠️ কোনো পণ্য নেই');return}
+  var pr=[['পণ্য','ক্রয়মূল্য','বিক্রয়মূল্য','মজুদ','স্টক মূল্য']];S.products.forEach(function(p){pr.push([p.name,p.cost,p.price,p.stock,r2(p.stock*p.cost)])});dl('smart-dokan-products.csv',pr)}
+});
+document.addEventListener('input',function(ev){
+ var i=ev.target.id;if(!i||i.indexOf('h_')!==0)return;
+ H.q=$('#h_q').value;H.t=$('#h_t').value;H.f=$('#h_f').value;H.to=$('#h_to').value;updHist();
+});
+$('#mc').onclick=function(){$('#modal').classList.add('hide')};
+$('#go').onclick=function(){S.welcomed=true;save();$('#welcome').classList.add('hide')};
+window.addEventListener('error',function(){toast('⚠️ কিছু সমস্যা হয়েছে, পেজ রিফ্রেশ করুন')});
+S=load();render();
+if(!S.welcomed)$('#welcome').classList.remove('hide');
+</script>
+</body>
+</html>
