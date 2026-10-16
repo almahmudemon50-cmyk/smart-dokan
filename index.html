@@ -293,5 +293,10 @@ window.addEventListener('error',function(){toast('⚠️ কিছু সমস�
 S=load();render();
 if(!S.welcomed)$('#welcome').classList.remove('hide');
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js");
+}
+</script>
 </body>
 </html>
